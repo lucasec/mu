@@ -972,8 +972,9 @@ the new docid. Otherwise, return nil."
 (defun mu4e-view-toggle-html ()
   "Toggle html-display of the message body (if any)."
   (interactive)
-  (let ((mu4e-view-prefer-html (not mu4e~message-body-html))) 
-    (mu4e-view-refresh))) 
+  (let ((mu4e-view-prefer-html (not mu4e~message-body-html))
+        (mu4e-view-force-text mu4e~message-body-html))
+    (mu4e-view-refresh)))
 
 (defun mu4e-view-refresh ()
   "Redisplay the current message."

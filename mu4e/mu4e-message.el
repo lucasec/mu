@@ -64,6 +64,10 @@ is always used."
   :type 'boolean
   :group 'mu4e-view)
 
+(defvar mu4e-view-force-text nil
+  "Whether to force messages to always render their text version.
+If the message has no text version, an empty body will be rendered.")
+
 (defcustom mu4e-view-html-plaintext-ratio-heuristic 5
   "Ratio between the length of the html and the plain text part
 below which mu4e will consider the plain text part to be 'This
@@ -180,8 +184,12 @@ unless PREFER-HTML is non-nil."
 	      ;; html part, it should't be used
 	      ;; This is an heuristic to guard against 'This messages requires
 	      ;; html' text bodies.
-	      ((and (> txtlen 0)
-		 (or (> txtlimit (length html)) (not prefer-html)))
+         ((or
+           (zerop (length html))
+           (and (> txtlen 0)
+                (or
+                 mu4e-view-force-text
+                 (and (> txtlimit (length html)) (not prefer-html)))))
 		txt)
 	      ;; otherwise, it there some html?
 	      (html
